@@ -81,12 +81,17 @@ void tape_delete_at(int index, struct Cell **tape) {
   struct Cell *elem = tape_get_at(index, *tape);
   // TODO: check if about to remove head element
   // and then change the pointer too
-  elem->prev->next = elem->next;
-  elem->next->prev = elem->prev;
+  if (elem->prev) {
+    elem->prev->next = elem->next;
+  }
 
-  /* if (index == 0 && elem == *tape) { */
-  /*   *tape = elem->next; */
-  /* } */
+  if (elem->next) {
+    elem->next->prev = elem->prev;
+  }
+
+  if (index == 0 && elem == *tape) {
+    *tape = elem->next;
+  }
 
   free(elem);
   elem = NULL;
@@ -114,15 +119,15 @@ int main(void) {
   tape_push_back(4, &tape);
   tape_push_front(0, &tape);
 
+  tape_delete_at(0, &tape);
+  tape_delete_at(3, &tape);
   tape_delete_at(1, &tape);
 
-  /* int a = tape_get_at(1, tape)->data; */
-  /* printf("a: %d\n", a); */
+  int a = tape_get_at(0, tape)->data;
+  printf("a: %d\n", a);
 
-  /* tape_delete_at(1, &tape); */
-
-  /* int b = tape_get_at(1, tape)->data; */
-  /* printf("b: %d\n", b); */
+  int b = tape_get_at(4, tape)->data;
+  printf("b: %d\n", b);
 
   tape_free(tape);
 
