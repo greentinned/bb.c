@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,10 +52,23 @@ struct Cell *tape_get_last(struct Cell *tape) {
 }
 
 struct Cell *tape_get_at(int index, struct Cell *tape) {
+  // Left bounds: index is less than zero
+  if (index < 0) {
+    fprintf(stderr, "Index %d is out of bounds\n", index);
+    exit(EXIT_FAILURE);
+  }
+
   int count = 0;
   struct Cell *result = tape_get_first(tape);
 
-  while (count < index && result->next) {
+  while (count < index) {
+    // Right bounds:
+    // We do not have next value, but still indexing
+    if (result->next == NULL && count < index) {
+      fprintf(stderr, "Index %d is out of bounds\n", index);
+      exit(EXIT_FAILURE);
+    }
+
     result = result->next;
     ++count;
   }
@@ -79,8 +93,7 @@ void tape_push_back(int elem, struct Cell **tape) {
 
 void tape_delete_at(int index, struct Cell **tape) {
   struct Cell *elem = tape_get_at(index, *tape);
-  // TODO: check if about to remove head element
-  // and then change the pointer too
+
   if (elem->prev) {
     elem->prev->next = elem->next;
   }
@@ -126,7 +139,7 @@ int main(void) {
   int a = tape_get_at(0, tape)->data;
   printf("a: %d\n", a);
 
-  int b = tape_get_at(4, tape)->data;
+  int b = tape_get_at(1, tape)->data;
   printf("b: %d\n", b);
 
   tape_free(tape);
