@@ -121,7 +121,6 @@ int main(void) {
   cell_delete_at(0, &cell);
   cell_delete_at(3, &cell);
   cell_delete_at(1, &cell);
-  cell_delete_at(10, &cell);
 
   int a = cell_get_at(0, cell)->data;
   printf("a: %d\n", a);
