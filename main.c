@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define check_bounds_error(index)                                              \
+  fprintf(stderr, "Error: Index %d is out of bounds\n", (index));              \
+  exit(EXIT_FAILURE)
+
 struct Cell {
   int data;
   struct Cell *next;
@@ -38,8 +42,7 @@ struct Cell *cell_get_last(struct Cell *cell) {
 struct Cell *cell_get_at(int index, struct Cell *cell) {
   // Left bounds: index is less than zero
   if (index < 0) {
-    fprintf(stderr, "Index %d is out of bounds\n", index);
-    exit(EXIT_FAILURE);
+    check_bounds_error(index);
   }
 
   int count = 0;
@@ -49,8 +52,7 @@ struct Cell *cell_get_at(int index, struct Cell *cell) {
     // Right bounds:
     // We do not have next value, but still indexing
     if (result->next == NULL && count < index) {
-      fprintf(stderr, "Index %d is out of bounds\n", index);
-      exit(EXIT_FAILURE);
+      check_bounds_error(index);
     }
 
     result = result->next;
@@ -119,6 +121,7 @@ int main(void) {
   cell_delete_at(0, &cell);
   cell_delete_at(3, &cell);
   cell_delete_at(1, &cell);
+  cell_delete_at(10, &cell);
 
   int a = cell_get_at(0, cell)->data;
   printf("a: %d\n", a);
