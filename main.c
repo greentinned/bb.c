@@ -94,7 +94,7 @@ void cell_delete_at(int index, struct Cell **cell) {
   elem = NULL;
 }
 
-void cell_free(struct Cell *cell) {
+void cell_free_all(struct Cell *cell) {
   struct Cell *prev_elem = cell_get_last(cell);
 
   do {
@@ -126,7 +126,7 @@ int main(void) {
   int b = cell_get_at(1, cell)->data;
   printf("b: %d\n", b);
 
-  cell_free(cell);
+  cell_free_all(cell);
 
   return 0;
 }
