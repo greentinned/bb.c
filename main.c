@@ -84,15 +84,14 @@ void tape_delete_at(int index, struct Cell **tape) {
   elem->prev->next = elem->next;
   elem->next->prev = elem->prev;
 
-  if (index == 0 && elem == *tape) {
-    *tape = elem->next;
-  }
+  /* if (index == 0 && elem == *tape) { */
+  /*   *tape = elem->next; */
+  /* } */
 
   free(elem);
   elem = NULL;
 }
 
-// TODO: leaks, needs check
 void tape_free(struct Cell *tape) {
   struct Cell *prev_elem = tape_get_last(tape);
 
@@ -107,7 +106,7 @@ void tape_free(struct Cell *tape) {
   tape = NULL;
 }
 
-int main() {
+int main(void) {
   struct Cell *tape = tape_new(1);
 
   tape_push_back(2, &tape);
@@ -115,7 +114,7 @@ int main() {
   tape_push_back(4, &tape);
   tape_push_front(0, &tape);
 
-  tape_delete_at(0, &tape);
+  tape_delete_at(1, &tape);
 
   /* int a = tape_get_at(1, tape)->data; */
   /* printf("a: %d\n", a); */
