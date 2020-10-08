@@ -110,22 +110,26 @@ void cell_free_all(struct Cell *cell) {
 }
 
 int main(void) {
-  struct Cell *cell = cell_new(1);
+  struct Cell *cell = cell_new(0);
 
-  cell_push_back(2, &cell);
-  cell_push_back(3, &cell);
-  cell_push_back(4, &cell);
-  cell_push_front(0, &cell);
+  for (int i = 1; i < 10000; ++i) {
+    if (i % 2 == 0) {
+      cell_push_back(i, &cell);
+    } else {
+      cell_push_front(i, &cell);
+    }
+  }
 
-  cell_delete_at(0, &cell);
-  cell_delete_at(3, &cell);
-  cell_delete_at(1, &cell);
+  for (int i = 1; i < 1000; ++i) {
+    if (i % 2 == 0) {
+      cell_delete_at(i, &cell);
+    }
+  }
 
-  int a = cell_get_at(0, cell)->data;
-  printf("a: %d\n", a);
-
-  int b = cell_get_at(1, cell)->data;
-  printf("b: %d\n", b);
+  struct Cell *first_cell = cell_get_first(cell);
+  while ((first_cell = first_cell->next)) {
+    printf("data: %d\n", first_cell->data);
+  }
 
   cell_free_all(cell);
 
