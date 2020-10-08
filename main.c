@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define check_bounds_error(index)                                              \
-  fprintf(stderr, "Error: Index %d is out of bounds\n", (index));              \
+#define panic_abort(fmt, ...)                                                  \
+  fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, __LINE__, __func__,            \
+          __VA_ARGS__);                                                        \
   exit(EXIT_FAILURE)
 
 struct Cell {
@@ -41,7 +42,7 @@ struct Cell *cell_get_last(struct Cell *cell) {
 struct Cell *cell_get_at(int index, struct Cell *cell) {
   // Left bounds: index is less than zero
   if (index < 0) {
-    check_bounds_error(index);
+    panic_abort("Index %d out of bounds\n", index);
   }
 
   int count = 0;
@@ -51,7 +52,7 @@ struct Cell *cell_get_at(int index, struct Cell *cell) {
     // Right bounds:
     // We do not have next value, but still indexing
     if (result->next == NULL && count < index) {
-      check_bounds_error(index);
+      panic_abort("Index %d out of bounds\n", index);
     }
 
     result = result->next;
