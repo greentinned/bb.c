@@ -1,4 +1,5 @@
-CC=gcc
+# CC=gcc
+CC=llvm-gcc
 CFLAGS=-Wall -g
 TARGET=main
 OBJECTS=$(TARGET).o

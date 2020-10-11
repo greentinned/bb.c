@@ -13,12 +13,14 @@ struct Cell {
   struct Cell *prev;
 };
 
+/* Crete new cell */
 struct Cell *cell_new(int elem) {
   struct Cell *result = malloc(sizeof(struct Cell));
   *result = (struct Cell){elem, 0, 0};
   return result;
 }
 
+/* Get first cell in the list */
 struct Cell *cell_get_first(struct Cell *cell) {
   struct Cell *result = cell;
 
@@ -29,6 +31,7 @@ struct Cell *cell_get_first(struct Cell *cell) {
   return result;
 }
 
+/* Get last cell in the list */
 struct Cell *cell_get_last(struct Cell *cell) {
   struct Cell *result = cell;
 
@@ -39,6 +42,7 @@ struct Cell *cell_get_last(struct Cell *cell) {
   return result;
 }
 
+/* Get cell at given index */
 struct Cell *cell_get_at(int index, struct Cell *cell) {
   // Left bounds: index is less than zero
   if (index < 0) {
@@ -49,8 +53,7 @@ struct Cell *cell_get_at(int index, struct Cell *cell) {
   struct Cell *result = cell_get_first(cell);
 
   while (count < index) {
-    // Right bounds:
-    // We do not have next value, but still indexing
+    // Right bounds: We do not have next value, but still indexing
     if (result->next == NULL && count < index) {
       panic_abort("Index %d out of bounds\n", index);
     }
@@ -62,6 +65,7 @@ struct Cell *cell_get_at(int index, struct Cell *cell) {
   return result;
 }
 
+/* Prepend cell to list */
 void cell_push_front(int elem, struct Cell **cell) {
   struct Cell *first_elem = cell_get_first(*cell);
   struct Cell *new_elem = cell_new(elem);
@@ -70,6 +74,7 @@ void cell_push_front(int elem, struct Cell **cell) {
   *cell = new_elem;
 }
 
+/* Append cell to list */
 void cell_push_back(int elem, struct Cell **cell) {
   struct Cell *last_elem = cell_get_last(*cell);
   struct Cell *new_elem = cell_new(elem);
@@ -77,6 +82,7 @@ void cell_push_back(int elem, struct Cell **cell) {
   last_elem->next = new_elem;
 }
 
+/* Delete cell at given index */
 void cell_delete_at(int index, struct Cell **cell) {
   struct Cell *elem = cell_get_at(index, *cell);
 
@@ -96,6 +102,7 @@ void cell_delete_at(int index, struct Cell **cell) {
   elem = NULL;
 }
 
+/* Free all list cells */
 void cell_free_all(struct Cell *cell) {
   struct Cell *prev_elem = cell_get_last(cell);
 
