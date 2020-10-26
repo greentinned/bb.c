@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,6 +17,11 @@ struct Cell {
 /* Crete new cell */
 struct Cell *cell_new(int elem) {
   struct Cell *result = malloc(sizeof(struct Cell));
+
+  if (result == NULL) {
+    panic_abort("Out of memory", NULL);
+  }
+
   *result = (struct Cell){elem, 0, 0};
   return result;
 }
@@ -104,6 +110,10 @@ void cell_delete_at(int index, struct Cell **cell) {
 
 /* Free all list cells */
 void cell_free_all(struct Cell *cell) {
+  if (cell == NULL) {
+    panic_abort("Attempt to free NULL cell", NULL);
+  }
+
   struct Cell *prev_elem = cell_get_last(cell);
 
   do {
